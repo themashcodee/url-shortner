@@ -22,7 +22,6 @@ const Signup: FC = (props: Props) => {
     });
     const data = await result.json();
     if (data.status === 200) {
-      alert(data.message);
       return router.replace("/signin");
     }
     alert(data.message);

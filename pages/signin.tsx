@@ -15,15 +15,14 @@ const Signin: FC = (props: Props) => {
     e.preventDefault();
     const result = await fetch("http://localhost:4000/api/v1/auth/signin", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
     const data = await result.json();
-    console.log(data);
     if (data.status === 200) {
-      alert(data.message);
       return router.replace("/");
     }
     alert(data.message);
