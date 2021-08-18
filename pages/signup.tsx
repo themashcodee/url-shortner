@@ -11,10 +11,10 @@ const Signup: FC = (props: Props) => {
     e.preventDefault();
     const result = await fetch("http://localhost:4000/api/v1/auth/signup", {
       method: "POST",
-      body: JSON.stringify({
-        email,
-        password,
-      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
     });
     const data = await result.json();
     console.log(data);
