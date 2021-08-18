@@ -7,8 +7,10 @@ interface Props {}
 
 const Signup: FC = (props: Props) => {
   const router = useRouter();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
   const registerUser = async (e: FormEvent) => {
     e.preventDefault();
     const result = await fetch("http://localhost:4000/api/v1/auth/signup", {
