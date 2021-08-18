@@ -1,10 +1,12 @@
 import React, { FC, FormEvent, useState } from "react";
 import styles from "../styles/signup.module.scss";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface Props {}
 
 const Signup: FC = (props: Props) => {
+  const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const registerUser = async (e: FormEvent) => {
@@ -17,7 +19,13 @@ const Signup: FC = (props: Props) => {
       body: JSON.stringify({ email, password }),
     });
     const data = await result.json();
-    console.log(data);
+    if (data.status === 200) {
+      alert(data.message);
+      return router.replace("/signin");
+    }
+    alert(data.message);
+    setEmail("");
+    setPassword("");
   };
 
   return (
