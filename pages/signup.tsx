@@ -12,7 +12,8 @@ const Signup: FC = (props: Props) => {
     const result = await fetch("http://localhost:4000/api/v1/auth/signup", {
       method: "POST",
     });
-    console.log(result);
+    const data = result.json();
+    console.log(data);
   };
 
   return (
