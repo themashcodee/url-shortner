@@ -6,6 +6,9 @@ const Home: NextPage = () => {
   const getAllLink = async () => {
     const result = await fetch("http://localhost:4000/api/v1/link/getall", {
       method: "GET",
+      headers: {
+        "Content-Type": "text/json",
+      },
       credentials: "include",
     });
     const data = await result.json();

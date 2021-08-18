@@ -15,6 +15,7 @@ const Signup: FC = (props: Props) => {
     e.preventDefault();
     const result = await fetch("http://localhost:4000/api/v1/auth/signup", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
