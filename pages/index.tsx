@@ -4,7 +4,7 @@ import styles from "../styles/index.module.scss";
 
 const Home: NextPage = () => {
   const getAllLink = async () => {
-    const result = await fetch("https://localhost:4000/api/v1/link/getall");
+    const result = await fetch("http://localhost:4000/api/v1/link/getall");
     const data = await result.json();
     console.log(data);
   };
