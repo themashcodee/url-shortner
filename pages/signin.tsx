@@ -52,7 +52,7 @@ const Signin: FC = (props: Props) => {
           name="description"
           content="make your urls short and easy to maintain"
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/logo.png" />
       </Head>
       <div className={styles.page}>
         <h1 className={styles.title}>Sign in</h1>
