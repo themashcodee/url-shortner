@@ -18,6 +18,7 @@ const Home = () => {
   const { token } = useContext(TokenContext);
   const [accessToken, setAccessToken] = useState<string>(token);
   const [count, setCount] = useState<number>(0);
+  const [links, setLinks] = useState<[]>();
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -34,7 +35,7 @@ const Home = () => {
             }
           )
         ).json();
-        console.log(data);
+        console.log("TOKEN", data);
         if (data?.status === 200) {
           setAccessToken(data.data.refreshToken);
         } else {
@@ -45,22 +46,28 @@ const Home = () => {
     fetchToken();
   }, [accessToken, router]);
 
-  const userDetails = async () => {
-    const res = await fetch(
-      "https://shortie-api.herokuapp.com/api/v1/link/userdetails",
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          authorization: `Bearer ${accessToken}`,
-        },
-        credentials: "include",
+  useEffect(() => {
+    const userDetails = async () => {
+      const res = await (
+        await fetch(
+          "https://shortie-api.herokuapp.com/api/v1/link/userdetails",
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              authorization: `Bearer ${accessToken}`,
+            },
+            credentials: "include",
+          }
+        )
+      ).json();
+      console.log("USER", res);
+      if (res.status === 200) {
+        setLinks(res.links);
       }
-    );
-    const User = await res.json();
-    console.log(User);
-  };
-  userDetails();
+    };
+    userDetails();
+  }, [links, accessToken]);
 
   return (
     <div className={styles.page}>
