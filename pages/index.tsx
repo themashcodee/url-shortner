@@ -1,13 +1,13 @@
-import type { NextPage } from "next";
 import React, { useContext } from "react";
 import Head from "next/head";
 import styles from "../styles/index.module.css";
 import { TokenContext } from "./_app";
-import router from "next/router";
+import { useRouter } from "next/router";
 import Header from "../components/Header";
 
 const Home = () => {
   const { token } = useContext(TokenContext);
+  const router = useRouter();
   if (!token) return router.replace("/signin");
 
   const userDetails = async () => {
