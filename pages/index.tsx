@@ -10,7 +10,7 @@ const Home = () => {
   const { token } = useContext(TokenContext);
 
   useEffect(() => {
-    if (!token) router.replace("/login");
+    if (!token) router.replace("/signin");
   });
 
   const userDetails = async () => {
