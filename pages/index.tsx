@@ -6,11 +6,9 @@ import { TokenContext } from "./_app";
 import router from "next/router";
 import Header from "../components/Header";
 
-const Home: NextPage = () => {
+const Home = () => {
   const { token } = useContext(TokenContext);
-  if (!token) {
-    router.replace("/signin");
-  }
+  if (!token) return router.replace("/signin");
 
   const userDetails = async () => {
     const res = await fetch(
