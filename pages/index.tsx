@@ -27,7 +27,7 @@ const Home = () => {
             "https://shortie-api.herokuapp.com/api/v1/auth/refreshtoken"
           )
         ).json();
-        if (data) {
+        if (data?.status === 200) {
           setAccessToken(data.data.refreshToken);
         } else {
           router.replace("/signin");
