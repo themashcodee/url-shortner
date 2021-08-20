@@ -39,10 +39,9 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <Header></Header>
       <h1>Hello World</h1>
       <p>{token}</p>
-      <button>request</button>
     </div>
   );
 };
