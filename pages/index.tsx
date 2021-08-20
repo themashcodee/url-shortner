@@ -16,8 +16,8 @@ const Home: NextPage = () => {
   //   const data = await result.json();
   //   console.log(data);
   // };
-  const data = useContext(TokenContext);
-  console.log(data?.token);
+  const { token } = useContext(TokenContext);
+  console.log("mainpage", token);
 
   return (
     <div className={styles.container}>
@@ -31,6 +31,7 @@ const Home: NextPage = () => {
       </Head>
 
       <h1>Hello World</h1>
+      <p>{token}</p>
       <button>request</button>
     </div>
   );

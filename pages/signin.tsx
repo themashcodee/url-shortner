@@ -9,7 +9,7 @@ interface Props {}
 
 const Signin: FC = (props: Props) => {
   const router = useRouter();
-  const data = useContext(TokenContext);
+  const { setToken } = useContext(TokenContext);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -32,7 +32,7 @@ const Signin: FC = (props: Props) => {
     const data = await result.json();
     if (data.status === 200) {
       console.log(data.data);
-      data.setToken(data.data.accessToken);
+      setToken(data.data.accessToken);
       return router.replace("/");
     }
 

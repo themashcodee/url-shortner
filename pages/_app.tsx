@@ -1,7 +1,10 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import React, { useState, createContext } from "react";
-export const TokenContext = createContext<TokenCont | null>(null);
+export const TokenContext = createContext<TokenCont>({
+  token: "",
+  setToken: () => {},
+});
 
 export interface TokenCont {
   token: string;
