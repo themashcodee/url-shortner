@@ -13,9 +13,11 @@ const Signin: FC = (props: Props) => {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [submitLabel, setSubmitLabel] = useState<string>("Submit");
 
   const loginUser = async (e: FormEvent) => {
     e.preventDefault();
+    setSubmitLabel("Submiting...");
 
     const result = await fetch(
       "https://shortie-api.herokuapp.com/api/v1/auth/signin",
@@ -31,14 +33,15 @@ const Signin: FC = (props: Props) => {
 
     const data = await result.json();
     if (data.status === 200) {
-      console.log(data.data);
       setToken(data.data.accessToken);
+      setSubmitLabel("Submit");
       return router.replace("/");
     }
 
     alert(data.message);
     setEmail("");
     setPassword("");
+    setSubmitLabel("Submit");
   };
 
   return (
@@ -81,7 +84,7 @@ const Signin: FC = (props: Props) => {
             maxLength={30}
           />
           <button type="submit" className={styles.submit}>
-            Submit
+            {submitLabel}
           </button>
         </form>
         <div className={styles.switch}>

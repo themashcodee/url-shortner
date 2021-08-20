@@ -3,24 +3,34 @@ import React, { useContext } from "react";
 import Head from "next/head";
 import styles from "../styles/index.module.css";
 import { TokenContext } from "./_app";
+import router from "next/router";
+import Header from "../components/Header";
 
 const Home: NextPage = () => {
-  // const getAllLink = async () => {
-  //   const result = await fetch("http://localhost:4000/api/v1/link/getall", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "text/json",
-  //     },
-  //     credentials: "include",
-  //   });
-  //   const data = await result.json();
-  //   console.log(data);
-  // };
   const { token } = useContext(TokenContext);
-  console.log("mainpage", token);
+  if (!token) {
+    router.replace("/signin");
+  }
+
+  const userDetails = async () => {
+    const res = await fetch(
+      "https://shortie-api.herokuapp.com/api/v1/link/userdetails",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "text/json",
+          authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      }
+    );
+    const User = await res.json();
+    console.log(User);
+  };
+  userDetails();
 
   return (
-    <div className={styles.container}>
+    <div className={styles.page}>
       <Head>
         <title>Url Shortner</title>
         <meta
@@ -36,5 +46,4 @@ const Home: NextPage = () => {
     </div>
   );
 };
-
 export default Home;
