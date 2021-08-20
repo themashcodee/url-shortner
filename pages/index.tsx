@@ -20,8 +20,8 @@ const Home = () => {
   const [count, setCount] = useState<number>(0);
 
   useEffect(() => {
-    if (!accessToken) {
-      const fetchToken = async () => {
+    const fetchToken = async () => {
+      if (!accessToken) {
         const data: refreshToken | null = await (
           await fetch(
             "https://shortie-api.herokuapp.com/api/v1/auth/refreshtoken",
@@ -40,10 +40,10 @@ const Home = () => {
         } else {
           router.replace("/signin");
         }
-      };
-      fetchToken();
-    }
-  });
+      }
+    };
+    fetchToken();
+  }, [accessToken, router]);
 
   const userDetails = async () => {
     const res = await fetch(
