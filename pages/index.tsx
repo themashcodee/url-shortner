@@ -20,11 +20,18 @@ const Home = () => {
   const [count, setCount] = useState<number>(0);
 
   useEffect(() => {
-    if (!token) {
+    if (!accessToken) {
       const fetchToken = async () => {
         const data: refreshToken | null = await (
           await fetch(
-            "https://shortie-api.herokuapp.com/api/v1/auth/refreshtoken"
+            "https://shortie-api.herokuapp.com/api/v1/auth/refreshtoken",
+            {
+              method: "GET",
+              credentials: "include",
+              headers: {
+                Accept: "application/json",
+              },
+            }
           )
         ).json();
         console.log(data);
@@ -44,8 +51,8 @@ const Home = () => {
       {
         method: "GET",
         headers: {
-          "Content-Type": "text/json",
-          authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          authorization: `Bearer ${accessToken}`,
         },
         credentials: "include",
       }
