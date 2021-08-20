@@ -9,7 +9,7 @@ interface refreshToken {
   message: string;
   status: number;
   data: {
-    refreshToken: string;
+    accessToken: string;
   };
 }
 
@@ -37,7 +37,7 @@ const Home = () => {
         ).json();
         console.log("TOKEN", data);
         if (data?.status === 200) {
-          setAccessToken(data.data.refreshToken);
+          setAccessToken(data.data.accessToken);
         } else {
           router.replace("/signin");
         }
