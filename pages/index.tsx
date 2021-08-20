@@ -27,6 +27,7 @@ const Home = () => {
             "https://shortie-api.herokuapp.com/api/v1/auth/refreshtoken"
           )
         ).json();
+        console.log(data);
         if (data?.status === 200) {
           setAccessToken(data.data.refreshToken);
         } else {
