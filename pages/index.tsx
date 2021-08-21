@@ -4,6 +4,8 @@ import styles from "../styles/index.module.css";
 import { TokenContext } from "./_app";
 import { useRouter } from "next/router";
 import Header from "../components/Header";
+import Cards from "../components/Cards";
+import { LinksType } from "../Types/index";
 
 interface refreshToken {
   message: string;
@@ -17,9 +19,47 @@ const Home = () => {
   const router = useRouter();
   const { token } = useContext(TokenContext);
   const [accessToken, setAccessToken] = useState<string>(token);
-  const [count, setCount] = useState<number>(0);
-  const [links, setLinks] = useState<[]>();
+  const [links, setLinks] = useState<[LinksType]>();
 
+  const logout = async () => {
+    const res = await (
+      await fetch("https://shortie-api.herokuapp.com/api/v1/auth/logout", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
+      })
+    ).json();
+    console.log(res);
+    if (res.status === 200) {
+      console.log("logout");
+      router.push("/signin");
+    }
+  };
+
+  // PREVENTING TO LOGIN AGAIN AFTER EXPIRING TOKEN
+  useEffect(() => {
+    setInterval(async () => {
+      const data: refreshToken | null = await (
+        await fetch(
+          "https://shortie-api.herokuapp.com/api/v1/auth/refreshtoken",
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        )
+      ).json();
+      if (data?.status === 200) {
+        setAccessToken(data.data.accessToken);
+      }
+    }, 1000 * 60 * 14);
+  }, []);
+
+  // WHEN WE REFRESH THE WEBSITE OR COME LATER SO REFRESHING THE ACCESS TOKEN AND SETTING IT IN THE STATE
   useEffect(() => {
     const fetchToken = async () => {
       if (!accessToken) {
@@ -35,7 +75,7 @@ const Home = () => {
             }
           )
         ).json();
-        console.log("TOKEN", data);
+        console.log(data);
         if (data?.status === 200) {
           setAccessToken(data.data.accessToken);
         } else {
@@ -46,28 +86,30 @@ const Home = () => {
     fetchToken();
   }, [accessToken, router]);
 
+  // GETTING THE USER DETAILS WITH THE HELP OF ACCESSTOKEN
   useEffect(() => {
     const userDetails = async () => {
-      const res = await (
-        await fetch(
-          "https://shortie-api.herokuapp.com/api/v1/link/userdetails",
-          {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              authorization: `Bearer ${accessToken}`,
-            },
-            credentials: "include",
-          }
-        )
-      ).json();
-      console.log("USER", res);
-      if (res.status === 200) {
-        setLinks(res.links);
+      if (accessToken) {
+        const res = await (
+          await fetch(
+            "https://shortie-api.herokuapp.com/api/v1/link/userdetails",
+            {
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+                authorization: `Bearer ${accessToken}`,
+              },
+              credentials: "include",
+            }
+          )
+        ).json();
+        if (res.status === 200) {
+          setLinks(res.data.user.links);
+        }
       }
     };
     userDetails();
-  }, [links, accessToken]);
+  }, [accessToken]);
 
   return (
     <div className={styles.page}>
@@ -79,11 +121,14 @@ const Home = () => {
         />
         <link rel="icon" href="/logo.png" />
       </Head>
-      <Header></Header>
-      <h1>Hello World</h1>
-      <p>{accessToken}</p>
-      <div>{count}</div>
-      <button onClick={() => setCount(count + 1)}>increase</button>
+      <Header accessToken={accessToken} setLinks={setLinks}></Header>
+      <h2 className={styles.subTitle}>Your Links</h2>
+      <div className={styles.cardsContainer}>
+        <Cards setLinks={setLinks} links={links} accessToken={accessToken} />
+      </div>
+      <div onClick={logout} className={styles.logout}>
+        Log out
+      </div>
     </div>
   );
 };
