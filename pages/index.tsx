@@ -73,7 +73,6 @@ const Home = () => {
             }
           )
         ).json();
-        console.log(data);
         if (data?.status === 200) {
           setAccessToken(data.data.accessToken);
         } else {
