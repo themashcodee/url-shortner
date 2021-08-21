@@ -24,16 +24,14 @@ const Home = () => {
   const logout = async () => {
     const res = await (
       await fetch("https://shortie-api.herokuapp.com/api/v1/auth/logout", {
-        method: "GET",
+        method: "POST",
         credentials: "include",
         headers: {
           Accept: "application/json",
         },
       })
     ).json();
-    console.log(res);
     if (res.status === 200) {
-      console.log("logout");
       router.push("/signin");
     }
   };
